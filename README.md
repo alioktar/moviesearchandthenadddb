@@ -1,26 +1,6 @@
 # 7. Hafta
 
-- https://www.themoviedb.org/
-  Üye olun ve api key alın
-
-- Ana sayfa --> /
-  Arama kutusu (metin girilecek, ara butonuna basıldığında bu api kullanılarak arama yapılacak)
-
-- Arama sayfası --> /search?q=URLENCODEDQUERY&page=4
-  Arama kutusu (aranan metin)
-  Sonuçlar listelenecek
-  Sonuçların altında pagination
-  Her bir sonucun yanında veritabanına ekle butonu olacak, eğer zaten veritabanında ise bu buton gözükmeyecek.
-  Eğer film veritabanındaysa "ayrıntıları gör" isminde bir buton olacak
-
-- Film detay --> /movie/1
-  Filmin detayları gösterilecek
-  Aşağıda, 1'den 10'a kadar filme puan verme butonları olacak
-
-- Unirest, GSON, PostgreSQL
-- Herokuya yüklenecek
-- Not defteri açıp, heroku adresini yazın
-
+* Uygulama [linki](https://searchmovieandthenaddtodb.herokuapp.com)
 
 # Getting Started
 

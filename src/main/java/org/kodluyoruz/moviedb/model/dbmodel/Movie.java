@@ -35,7 +35,8 @@ public class Movie extends MyEntity<Integer>{
     @Column(name = "org_title",length = 255)
     private String originalTitle;
 
-    @Column(name = "overview")
+    @Column(name = "overview",columnDefinition = "TEXT")
+    @Lob
     private String overview;
 
     @Column(name = "poster",length = 255)

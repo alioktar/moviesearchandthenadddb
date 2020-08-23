@@ -56,10 +56,17 @@ public class HomeController extends AbstractController {
             Model model
     ) {
         MovieSearchResultResponse result;
+        Integer intPage;
+
+        try {
+            intPage = Integer.parseInt(page);
+        } catch (NumberFormatException e) {
+            intPage = 1;
+        }
 
         if (search.length() > 0) {
             try {
-                result = apiService.search(search, Integer.parseInt(page));
+                result = apiService.search(search, intPage);
 
             } catch (UnirestException e) {
                 return "error/404";
@@ -86,8 +93,16 @@ public class HomeController extends AbstractController {
 
         ApiMovie result;
 
+        int movieId;
+
+        try{
+            movieId = Integer.parseInt(id);
+        }catch (NumberFormatException e){
+            return "redirect:/";
+        }
+
         try {
-            result = apiService.getMovieDetail(Integer.parseInt(id));
+            result = apiService.getMovieDetail(movieId);
 
         } catch (UnirestException e) {
             return "error/404";
@@ -159,7 +174,7 @@ public class HomeController extends AbstractController {
                 return "redirect:/movie/" + result.getId();
             }
             return "redirect:/";
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             return "error/404";
         }
@@ -168,7 +183,13 @@ public class HomeController extends AbstractController {
     @GetMapping(value = "/movie/{id}", produces = {MediaType.TEXT_HTML_VALUE})
     public String movie(@PathVariable final String id, Model model) {
 
-        int movieId = Integer.parseInt(id);
+        int movieId;
+
+        try{
+            movieId = Integer.parseInt(id);
+        }catch (NumberFormatException e){
+            return "redirect:/";
+        }
 
         Movie movie = movieService.findById(movieId);
 

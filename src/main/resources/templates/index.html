@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/" lang="tr">
+<head>
+    <title>Movie DB</title>
+    <th:block th:insert="template :: meta"/>
+    <th:block th:insert="template :: style"/>
+</head>
+<body class="vh-100" style="box-sizing: border-box">
+<th:block th:insert="template :: menu"/>
+
+<div class="container" style="height: calc(100% - 56px)">
+    <div class="row h-100">
+        <div class="col-12 d-flex align-items-center justify-content-center">
+            <div class="w-75 card">
+                <div class="card-body">
+                    <form action="search" method="get">
+                        <div class="row">
+                            <div class="col-9">
+                                <div class="form-group mb-0">
+                                    <input id="txtSearch" name="q" type="text" class="form-control"
+                                           placeholder="film arayın..."/>
+                                    <input type="hidden" name="page" th:value="1">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <button type="submit"
+                                        class="btn btn-outline-primary w-100 mb-0">Ara
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:insert="template :: script"/>
+</body>
+</html>

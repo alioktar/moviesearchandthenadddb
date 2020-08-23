@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/" lang="tr">
+<head>
+    <title>Movie DB</title>
+    <th:block th:insert="template :: meta"/>
+    <th:block th:insert="template :: style"/>
+</head>
+<body class="vh-100" style="box-sizing: border-box">
+<th:block th:insert="template :: menu"/>
+
+<div class="container" style="height: calc(100% - 56px)">
+    <div class="row h-100">
+        <div class="col-12 d-flex align-items-center justify-content-center">
+            <div class="w-100 card border-0 mb-2">
+                <div class="card-body">
+                    <form action="search" method="get">
+                        <div class="row">
+                            <div class="col-9">
+                                <div class="form-group mb-0">
+                                    <input id="txtSearch" name="q" type="text" class="form-control"
+                                           placeholder="film arayın..." th:value="${search}"/>
+                                    <input type="hidden" name="page" th:value="${page}">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <button type="submit"
+                                        class="btn btn-outline-primary w-100 mb-0">Ara
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card mt-2 mb-2 border-0 w-100" th:each="res: ${result.getResults()}">
+            <div class="row">
+                <div class="col-3 text-center">
+                    <img class="rounded mx-auto d-w-100 img-fluid" th:src="${image + res.getPoster()}" alt="">
+                </div>
+                <div class="col-9 w-75">
+                    <h3 class="w-100 card-title " th:text="${res.getTitle()}"></h3>
+                    <h5 class="w-100 card-subtitle mb-2 text-muted" th:text="${res.getOriginalTitle()}"></h5>
+                    <div class="w-100">
+                        <span class="badge badge-secondary" th:text="${res.getOriginalLanguage()}"></span>
+                        <span class="pl-2 pr-2" th:text="${dateFormat.format(res.getReleaseDate())}"></span> |
+                        <span class="pl-2 pr-2" th:text="${res.getGenres()}"></span> |
+                        <span class="badge badge-warning">IMDb</span> <span th:text="${res.getVotes()}"></span>
+                    </div>
+                    <div class="w-100" th:text="${res.getOverview()}"></div>
+                    <div class="w-100 text-right">
+                        <a
+                                th:href="${(res.isMovieExist() ? '/movie/' : '/add-movie/') + res.getId()}"
+                                class="btn btn-outline-success"
+                                th:text="${(res.isMovieExist() ? 'Ayrıntıları Gör' : 'Veritabanına Ekle')}"
+                        ></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 m-5 text-center">
+            <a th:href="${'/search?q=' + search + '&page=' + (page>1 ? page - 1 : 1)}"
+               class="btn btn-outline-info">
+                <i class="fa fa-chevron-left"></i>
+            </a>
+            ... <span th:text="${page>1 ? page - 1 : ''}"></span>
+            <span class="lead font-weight-bold" th:text="${page}"></span>
+            <span th:text="${page < result.getPages() ? page + 1 : ''}"></span> ...
+            <a th:href="${'/search?q=' + search + '&page=' + (page < result.getPages() ? page + 1 : result.getPages())}"
+               class="btn btn-outline-info">
+                <i class="fa fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<th:block th:insert="template :: script"/>
+</body>
+</html>

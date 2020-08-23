@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/" lang="tr">
+<head>
+    <title>Movie DB</title>
+    <th:block th:insert="template :: meta"/>
+    <th:block th:insert="template :: style"/>
+</head>
+<body class="vh-100" style="box-sizing: border-box">
+<th:block th:insert="template :: menu"/>
+
+<div class="container" style="height: calc(100% - 56px)">
+    <div class="row h-100">
+        <div class="card mt-5 mb-5 border-0 w-100">
+            <div class="row">
+                <div class="col-4 text-center">
+                    <img class="rounded mx-auto d-w-100 img-fluid" th:src="${image + movie.getPoster()}" alt="">
+                </div>
+                <div class="col-8 w-75">
+                    <h3 class="w-100 card-title " th:text="${movie.getTitle()}"></h3>
+                    <h5 class="w-100 card-subtitle mb-2 text-muted" th:text="${movie.getOriginalTitle()}"></h5>
+                    <div class="w-100">
+                        <span class="badge badge-secondary" th:text="${movie.getOriginalLanguage()}"></span>
+                        <span class="pl-2 pr-2" th:text="${dateFormat.format(movie.getReleaseDate())}"></span> |
+                        <span class="pl-2 pr-2">
+                            <span th:each="genre : ${genres}">
+                            <span th:text="${genre.getName() + ', '}"></span>
+                        </span>
+                        </span>|
+                        <span class="badge badge-warning">IMDb</span>
+                        <span th:text="${movie.getVoteAverage()}"></span>
+                        <small>/10</small> |
+                        <span class="pl-2" th:text="${movie.getDuration() + ' min'}"></span>
+                    </div>
+                    <div class="w-100 text-right d-flex align-items-center mt-2">
+                        <strong class="font-weight-bold text-muted">Puan ver:</strong>
+                        <div id="star" class="ml-2">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <input id="movieId" type="hidden" name="movieId" th:value="${movie.getId()}"/>
+                    </div>
+                    <div class="w-100 mt-2" th:text="${movie.getOverview()}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:insert="template :: script"/>
+<script type="text/javascript">
+
+    $(function () {
+
+        var kontrol = 0;
+
+        $("#star i").mouseover(function () {
+
+            var index = $(this).index();
+
+            $("#star i").css("color", "#000")
+
+            for (i = index; i >= 0; i--) {
+
+                $("#star i:eq(" + i + ")").css("color", "#ffc107");
+
+            }
+
+        })
+
+        $("#star i").mouseout(function () {
+
+            if (kontrol == 0) {
+
+                $("#star i").css("color", "#000");
+
+            }
+        })
+
+        $("#star i").click(function () {
+
+            const index = $(this).index() + 1;
+
+            kontrol = 1;
+
+            var mid = $("#movieId").val();
+
+            $.post("/scoring", {movieScore: index * 2, movieId: mid}, function (data) {
+                alertify.success("puanlama başarılı");
+                setTimeout(function(){
+                    window.location.reload();
+                }, 1000);
+            });
+        })
+
+    })
+
+</script>
+</body>
+</html>

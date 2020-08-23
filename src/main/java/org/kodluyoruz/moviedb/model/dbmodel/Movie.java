@@ -36,7 +36,6 @@ public class Movie extends MyEntity<Integer>{
     private String originalTitle;
 
     @Column(name = "overview",columnDefinition = "TEXT")
-    @Lob
     private String overview;
 
     @Column(name = "poster",length = 255)

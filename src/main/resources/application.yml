@@ -4,5 +4,6 @@ spring:
     username: wcqzgwpensfcau
     password: 1fd480ee04bdfa1dd4c532f2fed0effbcb13aae551ee6d7b7f3618d1eb3ec38b
     driver-class-name: org.postgresql.Driver
-  server:
-    port: 8081
+  jpa:
+    hibernate:
+      ddl-auto: update

@@ -93,71 +93,76 @@ public class HomeController extends AbstractController {
             return "error/404";
         }
 
-        if (result != null) {
-            Movie movie = new Movie();
-            movie.setId(result.getId());
-            movie.setBudget(result.getBudget());
-            movie.setImdbId(result.getImdbId());
-            movie.setOriginalLanguage(result.getOriginalLanguage());
-            movie.setOriginalTitle(result.getOriginalTitle());
-            movie.setOverview(result.getOverview());
-            movie.setPoster(result.getPoster());
-            movie.setReleaseDate(result.getReleaseDate());
-            movie.setDuration(result.getDuration());
-            movie.setTitle(result.getTitle());
-            movie.setVoteCount(result.getVoteCount());
-            movie.setVoteAverage(result.getVoteAverage());
-            movieService.add(movie);
+        try {
+            if (result != null) {
+                Movie movie = new Movie();
+                movie.setId(result.getId());
+                movie.setBudget(result.getBudget());
+                movie.setImdbId(result.getImdbId());
+                movie.setOriginalLanguage(result.getOriginalLanguage());
+                movie.setOriginalTitle(result.getOriginalTitle());
+                movie.setOverview(result.getOverview());
+                movie.setPoster(result.getPoster());
+                movie.setReleaseDate(result.getReleaseDate());
+                movie.setDuration(result.getDuration());
+                movie.setTitle(result.getTitle());
+                movie.setVoteCount(result.getVoteCount());
+                movie.setVoteAverage(result.getVoteAverage());
+                movieService.add(movie);
 
-            for (ApiCast resultCast : result.getCasts()) {
-                Cast cast = new Cast();
-                cast.setName(resultCast.getName());
-                cast.setCharacter(resultCast.getCharacter());
-                cast.setImage(resultCast.getImage());
-                cast.setOrder(resultCast.getOrder());
-                cast.setMovie(movie);
-                castService.add(cast);
-            }
-            for (ApiGenre apiGenre : result.getGenres()) {
-                boolean exists = genreService.existsById(apiGenre.getId());
-
-                Genre genre = new Genre();
-
-                if (!exists) {
-                    genre.setId(apiGenre.getId());
-                    genre.setName(apiGenre.getName());
-
-                    genreService.add(genre);
+                for (ApiCast resultCast : result.getCasts()) {
+                    Cast cast = new Cast();
+                    cast.setName(resultCast.getName());
+                    cast.setCharacter(resultCast.getCharacter());
+                    cast.setImage(resultCast.getImage());
+                    cast.setOrder(resultCast.getOrder());
+                    cast.setMovie(movie);
+                    castService.add(cast);
                 }
-                genre = genreService.findByGenreId(apiGenre.getId());
+                for (ApiGenre apiGenre : result.getGenres()) {
+                    boolean exists = genreService.existsById(apiGenre.getId());
 
-                MovieGenres movieGenres = new MovieGenres();
-                movieGenres.setGenre(genre);
-                movieGenres.setMovie(movie);
-                movieGenresService.add(movieGenres);
+                    Genre genre = new Genre();
+
+                    if (!exists) {
+                        genre.setId(apiGenre.getId());
+                        genre.setName(apiGenre.getName());
+
+                        genreService.add(genre);
+                    }
+                    genre = genreService.findByGenreId(apiGenre.getId());
+
+                    MovieGenres movieGenres = new MovieGenres();
+                    movieGenres.setGenre(genre);
+                    movieGenres.setMovie(movie);
+                    movieGenresService.add(movieGenres);
+                }
+
+
+                for (ApiCrew resultCrew : result.getCrews()) {
+                    Crew crew = new Crew();
+                    crew.setName(resultCrew.getName());
+                    crew.setJob(resultCrew.getJob());
+                    crew.setImage(resultCrew.getImage());
+                    crew.setMovie(movie);
+                    crewService.add(crew);
+                }
+
+                for (ApiProductionCompany resultCompany : result.getProductionCompanies()) {
+                    ProductionCompany company = new ProductionCompany();
+                    company.setName(resultCompany.getName());
+                    company.setId(resultCompany.getId());
+                    company.setImage(resultCompany.getImage());
+                    company.setMovie(movie);
+                    productionCompanyService.add(company);
+                }
+                return "redirect:/movie/" + result.getId();
             }
-
-
-            for (ApiCrew resultCrew : result.getCrews()) {
-                Crew crew = new Crew();
-                crew.setName(resultCrew.getName());
-                crew.setJob(resultCrew.getJob());
-                crew.setImage(resultCrew.getImage());
-                crew.setMovie(movie);
-                crewService.add(crew);
-            }
-
-            for (ApiProductionCompany resultCompany : result.getProductionCompanies()) {
-                ProductionCompany company = new ProductionCompany();
-                company.setName(resultCompany.getName());
-                company.setId(resultCompany.getId());
-                company.setImage(resultCompany.getImage());
-                company.setMovie(movie);
-                productionCompanyService.add(company);
-            }
-            return "redirect:/movie/" + result.getId();
+            return "redirect:/";
+        }catch (Exception e){
+            System.out.println(e);
+            return "error/404";
         }
-        return "redirect:/";
     }
 
     @GetMapping(value = "/movie/{id}", produces = {MediaType.TEXT_HTML_VALUE})

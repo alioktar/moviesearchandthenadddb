@@ -77,7 +77,7 @@ public class HomeController extends AbstractController {
                 Constants.setExistsByMovie(movieService, result);
 
                 model.addAttribute("search", search);
-                model.addAttribute("page", Integer.parseInt(page));
+                model.addAttribute("page", intPage);
                 model.addAttribute("image", HttpService.BASE_IMG_URL);
                 model.addAttribute("result", result);
                 model.addAttribute("dateFormat", DATE_FORMAT);

@@ -1,4 +1,4 @@
-# 7. Hafta
+# Film Arama ve Veritabanına Ekleme Uygulaması
 
 * Uygulama [linki](https://searchmovieandthenaddtodb.herokuapp.com)
 

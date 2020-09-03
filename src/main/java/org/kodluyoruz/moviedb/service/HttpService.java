@@ -14,7 +14,7 @@ import java.util.Map;
 public class HttpService {
     public static final String BASE_IMG_URL = "http://image.tmdb.org/t/p/w185/";
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
-    private static final String API_KEY = "17bbf4c67d59f2a2e23a973560266b83";
+    private static final String API_KEY = "YOUR_API_KEY";
     private static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
     private final LinkedHashMap<String, String> params = new LinkedHashMap<>();
@@ -35,7 +35,7 @@ public class HttpService {
     private String buildURL() {
         /**
          *         BASE_URL             /endpoint?api_key=API_KEY                         &Key=Value
-         * https://api.themoviedb.org/3/movie/550?api_key=17bbf4c67d59f2a2e23a973560266b83
+         * https://api.themoviedb.org/3/movie/550?api_key=YOUR_API_KEY
          * */
 
         StringBuilder url = new StringBuilder()
